@@ -1,4 +1,0 @@
-chispa
-pytest
-pyspark
-pyspark[sql]
