@@ -16,8 +16,7 @@ WITH actors_lagged as (
 /*Get the changes in "is_active" and "quality_class" column*/
 streaked as (
   SELECT *,
-  SUM(CASE WHEN is_active <> is_active_last_year THEN 1 ELSE 0 END) OVER (PARTITION BY actor_id ORDER BY current_year) as streak_active_identifier,
-  SUM(CASE WHEN quality_class <> quality_class_last_year THEN 1 ELSE 0 END) OVER(PARTITION BY actor_id ORDER BY current_year) as streak_quality_class_identifier
+  SUM(CASE WHEN is_active = is_active_last_year AND quality_class = quality_class_last_year THEN 0 ELSE 1 END) OVER (PARTITION BY actor_id ORDER BY current_year) as streak_identifier
   FROM actors_lagged 
 )
 
@@ -35,5 +34,4 @@ FROM streaked
 GROUP BY  
   actor,
   actor_id,
-  streak_active_identifier,
-  streak_quality_class_identifier
+  streak_identifier
