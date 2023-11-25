@@ -36,7 +36,6 @@ day_data AS (
   GROUP BY 1,2,3
 )
 
-/*Aggregate old data with new data*/
 ,aggregated as (
   SELECT
     COALESCE(old_data.user_id, new_data.user_id) as user_id,
@@ -58,18 +57,7 @@ day_data AS (
             CASE 
                  /*Device is not present in the device list*/
                 WHEN element_at(old_data.device_activity_datelist, new_data.device_info) IS NULL
-                    THEN 
-                      /*If all other devices have data today, just map the current device*/ 
-                      CASE WHEN CARDINALITY(ARRAY_EXCEPT(map_keys(old_data.device_activity_datelist), new_data.device_array)) = 0
-                        THEN MAP(ARRAY[new_data.device_info], ARRAY[ARRAY[new_data.event_date]]) 
-                         /*Concat current device data with old devices data*/
-                         ELSE
-                            map_concat(MAP(ARRAY[new_data.device_info], ARRAY[ARRAY[new_data.event_date]]),
-                              map_filter(old_data.device_activity_datelist, 
-                              (k, v) -> CONTAINS(ARRAY_EXCEPT(map_keys(old_data.device_activity_datelist), new_data.device_array), k)
-                              )
-                            )      
-                      END
+                    THEN MAP(ARRAY[new_data.device_info], ARRAY[ARRAY[new_data.event_date]])        
                 /*Device is present in the device list and every other device is in today's data*/
                 WHEN CARDINALITY(ARRAY_EXCEPT(map_keys(old_data.device_activity_datelist), new_data.device_array)) = 0
                   THEN MAP(ARRAY[new_data.device_info], 
