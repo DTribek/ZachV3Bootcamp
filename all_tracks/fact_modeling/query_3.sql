@@ -74,7 +74,7 @@ day_data AS (
                 WHEN CARDINALITY(ARRAY_EXCEPT(map_keys(old_data.device_activity_datelist), new_data.device_array)) = 0
                   THEN MAP(ARRAY[new_data.device_info], 
                            ARRAY[DATE(new_data.event_date) || element_at(old_data.device_activity_datelist, new_data.device_info)])
-                  /*Device is present in the device list but some device is not in today's data. 
+                  /*Deviceinfo is present in the device list but some device is not in today's data. 
                   Concat the present device data with old data from devices that don't appear in current's date*/
                   ELSE
                     map_concat(MAP(ARRAY[new_data.device_info], 
