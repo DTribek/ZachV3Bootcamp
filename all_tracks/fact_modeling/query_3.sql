@@ -12,10 +12,14 @@ WITH old_data AS (
 day_data AS (
   SELECT
     web.user_id,
-    CAST(web.device_id as VARCHAR) as device_info,
+    CAST(dev.browser_type as VARCHAR) as device_info,
     DATE(web.event_time) as event_date
 
   FROM bootcamp.web_events as web
+  
+  LEFT JOIN bootcamp.devices as dev
+  ON web.device_id = dev.device_id
+  
   WHERE
   DATE(event_time) = DATE('2022-01-05')
   GROUP BY 1, 2, 3
