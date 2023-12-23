@@ -1,3 +1,4 @@
+--ANSWER: 136 GAMES
 --Get lebron data, considering 1 if the condition is met (10 score or more)
 WITH lebron_data as (
   SELECT

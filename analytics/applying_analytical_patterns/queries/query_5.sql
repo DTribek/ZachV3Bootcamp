@@ -1,5 +1,6 @@
 --Answers the following question:
 --Which team has won the most games"
+--ANSWER: team: SAS, 14890 wins.
 SELECT 
   team,
   season,

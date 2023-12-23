@@ -1,3 +1,4 @@
+--ANSWER: team: DAL, MIA, victories: 72
 --Get team, victory (int) and game date.
 WITH base_data as (
   SELECT
