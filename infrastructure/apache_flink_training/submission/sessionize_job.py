@@ -11,6 +11,7 @@ def create_aggregated_events_sink_postgres(t_env):
         CREATE TABLE {table_name} (
             event_hour TIMESTAMP(3),
             host VARCHAR,
+            ip VARCHAR,
             num_hits BIGINT
         ) WITH (
             'connector' = 'jdbc',
