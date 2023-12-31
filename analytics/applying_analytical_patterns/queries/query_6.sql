@@ -1,6 +1,20 @@
---ANSWER: team: DAL, MIA, victories: 72
+--ANSWER: team: PHI, BOS, DET victories: 62
 --Get team, victory (int) and game date.
-WITH base_data as (
+WITH dedup_game_details as (
+  SELECT 
+    *,
+    ROW_NUMBER() OVER(PARTITION BY game_id, team_id, player_id) as row_number
+  FROM bootcamp.nba_game_details
+)
+
+,dedup_nba_games as (
+  SELECT 
+    *,
+    ROW_NUMBER() OVER(PARTITION BY game_id ORDER BY game_date_est DESC) as row_number
+    FROM bootcamp.nba_games
+)
+
+,base_data as (
   SELECT
     details.team_abbreviation as team,
     CASE 
@@ -16,9 +30,12 @@ WITH base_data as (
     END as winnings,
     games.game_date_est
     
-  FROM bootcamp.nba_game_details as details
-  INNER JOIN bootcamp.nba_games as games 
+  FROM dedup_game_details as details
+  INNER JOIN dedup_nba_games as games 
   ON details.game_id = games.game_id
+
+  WHERE games.row_number = 1 AND
+  details.row_number = 1
 )
 
 --Get the sum of victories considering 90 game interval

@@ -16,7 +16,21 @@ WITH
 --------------------------------------------------------------
 INSERT INTO diegotribek.dashboard_game_table
 --Enhanced the data from nba_game_details
-WITH base_data as (
+WITH dedup_game_details as (
+  SELECT 
+    *,
+    ROW_NUMBER() OVER(PARTITION BY game_id, team_id, player_id) as row_number
+  FROM bootcamp.nba_game_details
+)
+
+,dedup_nba_games as (
+  SELECT 
+    *,
+    ROW_NUMBER() OVER(PARTITION BY game_id ORDER BY game_date_est DESC) as row_number
+    FROM bootcamp.nba_games
+)
+
+,base_data as (
   SELECT
     details.team_abbreviation as team,
     details.player_id,
@@ -36,12 +50,16 @@ WITH base_data as (
     END as match_result,
     games.season as season
     
-  FROM bootcamp.nba_game_details as details
-  INNER JOIN bootcamp.nba_games as games 
+  FROM dedup_game_details as details
+  INNER JOIN dedup_nba_games  as games 
   ON details.game_id = games.game_id
+  
+  WHERE games.row_number=1 AND
+  details.row_number = 1
 )
 
 --Use grouping sets to get the result accordingly
+,temp as (
 SELECT 
   COALESCE(team, 'overall') as team,
   COALESCE(player_name, 'overall') as player_name,
@@ -54,7 +72,18 @@ SELECT
     ELSE 0
   END as team_wins
 FROM base_data
+GROUP BY 1,2,3,5
+)
+
+SELECT 
+  team,
+  player_name,
+  season,
+  total_points_scored,
+  team_wins
+FROM temp
 GROUP BY GROUPING SETS (
+  (team, total_points_scored, team_wins),
   (player_name, team),
   (player_name, season),
   (team)

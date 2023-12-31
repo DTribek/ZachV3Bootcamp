@@ -1,6 +1,22 @@
 --ANSWER: 136 GAMES
 --Get lebron data, considering 1 if the condition is met (10 score or more)
-WITH lebron_data as (
+/*Uses row_number to deduplicate values. Considered primary_keys are: game_id, team_id, player_id*/
+WITH dedup_game_details as (
+  SELECT 
+    *,
+    ROW_NUMBER() OVER(PARTITION BY game_id, team_id, player_id) as row_number
+  FROM bootcamp.nba_game_details
+)
+
+,dedup_nba_games as (
+  SELECT 
+    game_date_est,
+    game_id,
+    ROW_NUMBER() OVER(PARTITION BY game_id ORDER BY game_date_est DESC) as row_number
+    FROM bootcamp.nba_games
+)
+
+,lebron_data as (
   SELECT
     details.player_name,
     CASE 
@@ -10,13 +26,14 @@ WITH lebron_data as (
     END as current_game_score,
     games.game_date_est
     
-  FROM bootcamp.nba_game_details as details
+  FROM dedup_game_details as details
   
-  INNER JOIN bootcamp.nba_games as games 
+  INNER JOIN dedup_nba_games  as games 
   ON details.game_id = games.game_id
   
-  WHERE details.player_name = 'LeBron James'
-  
+  WHERE details.player_name = 'LeBron James' 
+  AND details.row_number = 1 
+  AND games.row_number = 1
 )
 
 --CTE to get the previous data condition met game
