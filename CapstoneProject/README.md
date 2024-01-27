@@ -56,13 +56,14 @@ To use this project, follow the steps below:
 
 1. Clone this repository to your local environment. <br>
 2. Make sure you have Python installed on your machine. <br>
-3. Open a terminal in the project folder. <br>
-4. Run the main program program.py and pass your steam_id as a parameter.<br>
-5. The program will query your information on Steam, cross-reference this data with the categories of hours played, and provide game suggestions based on this information. <br>
-6. The information is an excel file containing a list of games, sorted by reccomendation strength, with name, price and link to buy  ;)
+3. Unzip the files in *data* folder. 
+5. Open a terminal in the project folder. <br>
+6. Run the main program steam_recommendation.py and pass your steam_id as a parameter.<br>
+7. The program will query your information on Steam, cross-reference this data with the categories of hours played, and provide game suggestions based on this information. <br>
+8. The information is an excel file containing a list of games, sorted by reccomendation strength, with name, price and link to buy  ;)
 
 ### Architecture diagram
-![Image Alt text](/arquitecture_diagram.png)
+![Image Alt text](arquitecture_diagram.png)
 
 ## Learning Insights
 Throughout this project, I deepened my understanding of working with APIs, specifically IGDB and SteamAPI, and processing data in JSON and CSV formats. I realized the complexity of consolidating game data from various websites into a single database, highlighting the challenges of real-world data integration.
