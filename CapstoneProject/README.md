@@ -106,5 +106,5 @@ When executing steam_reccomendation.py with your Steam ID as an argument, an Exc
 Thanks **Zach** and **TA's team** really appreciate being part of the bootcamp. The content really helped me facing problems from a different perspective and  has contributed significantly to my growth as a data engineer.
 
 Final special thanks for my family and my father, that passed away in december 17, 2023.<br> 
-I promissed him, I am committed to becoming the best Data Engineer that I can be and thats my felling: 
+I promissed him, I am committed to becoming the best man that I can be and thats my felling: 
 ![Terminal](https://quotefancy.com/media/wallpaper/800x450/4675000-Kobe-Bryant-Quote-Great-things-come-from-hard-work-and.jpg)
