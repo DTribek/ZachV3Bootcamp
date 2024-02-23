@@ -4,7 +4,24 @@ from pyspark.sql.dataframe import DataFrame
 
 def query_1(output_table_name: str) -> str:
     return f"""
-    <YOUR QUERY HERE>
+  WITH dedup_nba_games as (
+    SELECT 
+        *,
+        ROW_NUMBER() OVER(PARTITION BY game_id ORDER BY game_date_est DESC) as row_num
+    FROM bootcamp.nba_games
+  )
+
+  SELECT 
+    game_id AS identifier,
+    game as `type`,
+    map(
+        'player_name', player_name
+        'pts', CAST(pts AS STRING),
+        'season', CAST(season AS STRING)
+    ) as properties
+  FROM
+  dedup_nba_games 
+  WHERE row_num = 1
     """
 
 def job_1(spark_session: SparkSession, output_table_name: str) -> Optional[DataFrame]:
@@ -13,7 +30,7 @@ def job_1(spark_session: SparkSession, output_table_name: str) -> Optional[DataF
   return spark_session.sql(query_1(output_table_name))
 
 def main():
-    output_table_name: str = "<output table name here>"
+    output_table_name: str = "game_deduped"
     spark_session: SparkSession = (
         SparkSession.builder
         .master("local")
