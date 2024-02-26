@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 from tqdm import tqdm
 
-KEY = '99442A67D45D5A04C1AE4798A071C140'
+KEY = 'Your steam KEY here'
 steam = Steam(KEY)
 
 base_path = Path(__file__).parent
