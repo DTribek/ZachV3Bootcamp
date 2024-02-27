@@ -17,6 +17,7 @@ To set your Steam profile to public, follow these steps:
 2. Go to the "Profile" tab.<br>
 3. Click on "Edit Profile".<br>
 4. In the privacy settings, set your profile to public.<br>
+5. All steps are described in the following link: https://www.alphr.com/view-hours-played-steam/#:~:text=Hover%20the%20mouse%20pointer%20over%20%E2%80%9C%5Byour%20username%5D%2C%E2%80%9D,tools%20to%20access%20those%20areas.
 
 ### Obtaining your steam_id
 The steam_id is a unique identifier associated with your Steam account. To find it, follow these steps:
@@ -58,9 +59,11 @@ To use this project, follow the steps below:
 2. Make sure you have Python installed on your machine. <br>
 3. Unzip the files in *data* folder. 
 5. Open a terminal in the project folder. <br>
-6. Run the main program steam_recommendation.py and pass your steam_id as a parameter.<br>
-7. The program will query your information on Steam, cross-reference this data with the categories of hours played, and provide game suggestions based on this information. <br>
-8. The information is an excel file containing a list of games, sorted by reccomendation strength, with name, price and link to buy  ;)
+6. Get your steam api key at : https://steamcommunity.com/dev/apikey
+7. Replace your key in steam_recommendation script, line 11.
+8. Run the main program steam_recommendation.py and pass your steam_id as a parameter.<br>
+9. The program will query your information on Steam, cross-reference this data with the categories of hours played, and provide game suggestions based on this information. <br>
+10. The information is an excel file containing a list of games, sorted by reccomendation strength, with name, price and link to buy  ;)
 
 ### Architecture diagram
 ![Image Alt text](arquitecture_diagram.png)

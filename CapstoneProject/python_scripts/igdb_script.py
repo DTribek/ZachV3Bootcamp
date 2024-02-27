@@ -8,8 +8,8 @@ import re
 from tqdm import tqdm
 from pathlib import Path
 
-acc_key= 'Your access key here'
-pass_key = 'Your pass key HEERE'
+acc_key= '2npvi68ap3vkyrzihmpa71k4aqg4w9'
+pass_key = 'gndygyktikfny2aw2md9oy80l9mj4y'
 base_url = "https://api.igdb.com/v4/games/"
 limit = 500
 

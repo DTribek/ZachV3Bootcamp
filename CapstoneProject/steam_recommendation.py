@@ -8,7 +8,7 @@ from tqdm import tqdm
 import sys
 
 
-KEY = '99442A67D45D5A04C1AE4798A071C140'
+KEY = 'You steam api key'
 steam = Steam(KEY)
 
 base_path = Path(__file__).parent
@@ -155,6 +155,10 @@ def get_user_recommendation_df(steam_id):
 
     #Get player games and bucket them into fanatic, love, moderate and little
     played_games = parse_games_owned(steam_id)
+    if not played_games:
+        print("Please set profile to public and show game hours played")
+        return None
+    
     search_list_fanatic = get_games_per_category('fanatic', played_games)
     search_list_love = get_games_per_category('love', played_games)
     search_list_moderate = get_games_per_category('moderate', played_games)
@@ -165,16 +169,20 @@ def get_user_recommendation_df(steam_id):
     
     #Build the df based on the list that player like and game rating
     my_list_fanatic = get_list_games(search_list_fanatic, df_igdb_data, df_similar_games)
-    my_list_fanatic = df_igdb_data[df_igdb_data['id'].isin(my_list_fanatic)]['name_normalized'].tolist()
+    if my_list_fanatic.any():
+        my_list_fanatic = df_igdb_data[df_igdb_data['id'].isin(my_list_fanatic)]['name_normalized'].tolist()
 
     my_list_love = get_list_games(search_list_love, df_igdb_data, df_similar_games)
-    my_list_love = df_igdb_data[df_igdb_data['id'].isin(my_list_love)]['name_normalized'].tolist()
+    if my_list_love.any():
+        my_list_love = df_igdb_data[df_igdb_data['id'].isin(my_list_love)]['name_normalized'].tolist()
     
     my_list_moderate = get_list_games(search_list_moderate, df_igdb_data, df_similar_games)
-    my_list_moderate = df_igdb_data[df_igdb_data['id'].isin(my_list_moderate)]['name_normalized'].tolist()
+    if my_list_moderate.any():
+        my_list_moderate = df_igdb_data[df_igdb_data['id'].isin(my_list_moderate)]['name_normalized'].tolist()
     
     my_list_little = get_list_games(search_list_little, df_igdb_data, df_similar_games)
-    my_list_little = df_igdb_data[df_igdb_data['id'].isin(my_list_little)]['name_normalized'].tolist()
+    if my_list_little.any():
+        my_list_little = df_igdb_data[df_igdb_data['id'].isin(my_list_little)]['name_normalized'].tolist()
 
     df_fanatic = build_lists(4, games_owned, good_games, top_games, my_list_fanatic)
     df_love = build_lists(3, games_owned, good_games, top_games, my_list_love)
